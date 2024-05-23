@@ -9,15 +9,17 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selectedTab = ContactsView.tabName
+    
     var body: some View {
-        NavigationStack {
             TabView(selection: $selectedTab) {
                 ContactsView().tabItem {
                     Label(
-                        title: { Text("Contacts")},
+                        title: { Text("Contacts") },
                         icon: { Image(systemName: "person.circle.fill") }
                     )
-                }.tag(ContactsView.tabName)
+                }
+                .tag(ContactsView.tabName)
+
                 Text("Tab Content 1").tabItem {
                     Label(
                         title: { Text("Recents") },
@@ -27,8 +29,6 @@ struct ContentView: View {
                 
             }
             .navigationTitle($selectedTab)
-        }
-        
     }
 }
 
