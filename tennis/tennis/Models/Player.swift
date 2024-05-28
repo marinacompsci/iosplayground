@@ -8,7 +8,7 @@
 import Foundation
 
 class Player {
-    var currentStatus: Status = .love
+    var status: Status = .love
     var name: String
     let order: PlayingOrder!
     

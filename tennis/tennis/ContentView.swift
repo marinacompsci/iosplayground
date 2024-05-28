@@ -42,7 +42,7 @@ struct ContentView: View {
                 } else {
                     Text("WINNER: \(game.winner!.name)")
                     Button {
-                        print("restart game")
+                        game.restart()
                     } label: {
                         Text("Restart")
                     }

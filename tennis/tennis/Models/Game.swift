@@ -15,7 +15,7 @@ class Game: ObservableObject {
     @Published var nextPlayer: Player!
     
     var score: (Status, Status) {
-        (playerOne.currentStatus, playerTwo.currentStatus)
+        (playerOne.status, playerTwo.status)
     }
     
     init() {
@@ -36,42 +36,51 @@ class Game: ObservableObject {
         
         let otherPlayer = playingOrder == .first ? playerTwo : playerOne
         
-        switch currentPlayer.currentStatus {
+        switch currentPlayer.status {
             
             case .love:
-                currentPlayer.currentStatus = .fifteen
+                currentPlayer.status = .fifteen
             case .fifteen:
-                currentPlayer.currentStatus = .thirty
-                if otherPlayer.currentStatus == .love {
+                currentPlayer.status = .thirty
+                if otherPlayer.status == .love {
                     winner = currentPlayer
                     return
                 }
             case .thirty:
-                currentPlayer.currentStatus = .forty
-                if (otherPlayer.currentStatus == .love || otherPlayer.currentStatus == .fifteen) {
+                if otherPlayer.status == .forty {
+                    currentPlayer.status = .deuce
+                    otherPlayer.status = .deuce
+                } else if (otherPlayer.status == .love || otherPlayer.status == .fifteen) {
+                    currentPlayer.status = .forty
                     winner = playerOne
+                    return
+                } else {
+                    currentPlayer.status = .forty
                 }
             case .forty:
-                if currentPlayer.currentStatus == .forty {
-                    currentPlayer.currentStatus = .deuce
-                    otherPlayer.currentStatus = .deuce
-                } else if (otherPlayer.currentStatus != .thirty || otherPlayer.currentStatus == .fifteen) {
+                if (otherPlayer.status != .thirty) {
                     winner = currentPlayer
                     return
                 }
             case .deuce:
-                if otherPlayer.currentStatus == .advantage {
-                    otherPlayer.currentStatus = .deuce
+                if otherPlayer.status == .advantage {
+                    otherPlayer.status = .deuce
                 } else {
-                    currentPlayer.currentStatus = .advantage
+                    currentPlayer.status = .advantage
                 }
             case .advantage:
                 winner = currentPlayer
                 return
         }
-        nextPlayer = otherPlayer        
+        switchPlayers()
     }
     
+    func restart() {
+        playerOne = Player(name: "Player One", order: .first)
+        playerTwo = Player(name: "Player Two", order: .second)
+        winner = nil
+        nextPlayer = playerOne
+    }
     
     
 }
