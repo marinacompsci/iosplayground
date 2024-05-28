@@ -91,8 +91,8 @@
 		9CA61AF82BFE6A1E0092B7AD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				9CA61AF02BFE69EE0092B7AD /* BookAPIResponse.swift */,
 				9CA61AEE2BFE69EE0092B7AD /* Book.swift */,
-				9CA61AEF2BFE69EE0092B7AD /* BookAPI.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -100,7 +100,7 @@
 		9CA61AF92BFE6A2E0092B7AD /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				9CA61AF02BFE69EE0092B7AD /* BookAPIResponse.swift */,
+				9CA61AEF2BFE69EE0092B7AD /* BookAPI.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
