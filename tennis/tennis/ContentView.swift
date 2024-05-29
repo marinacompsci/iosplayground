@@ -24,20 +24,20 @@ struct ContentView: View {
                     Text("\(game.currentPlayer!.name)")
 
                     HStack {
-                            Button {
-                                print("\(game.currentPlayer.name) scored")
-                                game.currentPlayerScores()
-                            } label: {
-                                Text("Score")
-                            }
-                            .padding()
-                            Button {
-                                game.currentPlayerMisses()
-                                print("\(game.currentPlayer.name) missed")
-                            } label: {
-                                Text("Miss")
-                            }
-                            .padding()
+                        Button {
+                            print("\(game.currentPlayer.name) scored")
+                            game.currentPlayerScores()
+                        } label: {
+                            Text("Score")
+                        }
+                        .padding()
+                        Button {
+                            game.currentPlayerMisses()
+                            print("\(game.currentPlayer.name) missed")
+                        } label: {
+                            Text("Miss")
+                        }
+                        .padding()
                     }
                 } else {
                     Text("WINNER: \(game.winner!.name)")
@@ -47,8 +47,6 @@ struct ContentView: View {
                         Text("Restart")
                     }
                 }
-                
-                
             }
             .padding(.bottom)
             Spacer()
