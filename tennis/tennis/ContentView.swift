@@ -21,19 +21,19 @@ struct ContentView: View {
             Spacer()
             VStack {
                 if game.winner == nil {
-                    Text("\(game.nextPlayer!.name)")
+                    Text("\(game.currentPlayer!.name)")
 
                     HStack {
                             Button {
-                                print("\(game.nextPlayer.name) scored")
-                                game.updatePlayersScore(by: game.nextPlayer.order)
+                                print("\(game.currentPlayer.name) scored")
+                                game.currentPlayerScores()
                             } label: {
                                 Text("Score")
                             }
                             .padding()
                             Button {
-                                game.switchPlayers()
-                                print("\(game.nextPlayer.name) missed")
+                                game.currentPlayerMisses()
+                                print("\(game.currentPlayer.name) missed")
                             } label: {
                                 Text("Miss")
                             }

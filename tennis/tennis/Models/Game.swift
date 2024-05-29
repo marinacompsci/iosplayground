@@ -8,79 +8,84 @@
 import Foundation
 
 class Game: ObservableObject {
-    private var playerOne = Player(name: "Player One", order: .first)
-    private var playerTwo = Player(name: "Player Two", order: .second)
+    private var playerOne = Player(name: "Player One")
+    private var playerTwo = Player(name: "Player Two")
 
     @Published var winner: Player? = nil
-    @Published var nextPlayer: Player!
+    @Published var currentPlayer: Player!
     
     var score: (Status, Status) {
         (playerOne.status, playerTwo.status)
     }
     
-    init() {
-        nextPlayer = playerOne
+    var otherPlayer: Player {
+        currentPlayer === playerOne ? playerTwo : playerOne
     }
     
+    var currentPlayerWon: Bool {
+        currentPlayer.hasMinimumPoints && currentPlayerHasPointsAdvantage
+    }
     
-    func switchPlayers() {
-        if nextPlayer.order == .first {
-            nextPlayer = playerTwo
+    var currentPlayerHasPointsAdvantage: Bool {
+        currentPlayer.points - otherPlayer.points >= 2
+    }
+    
+    init() {
+        currentPlayer = playerOne
+    }
+    
+    func updateCurrentPlayerStatus() {
+        currentPlayer.increasePoints()
+
+        switch currentPlayer.status {
+        case .love:
+            currentPlayer.status = .fifteen
+        case .fifteen:
+            currentPlayer.status = .thirty
+        case .thirty:
+            currentPlayer.status = .forty
+        case .forty:
+            if (currentPlayer.hasMinimumPoints && currentPlayerHasPointsAdvantage) {
+                fallthrough
+            } else if otherPlayer.status == .advantage {
+                otherPlayer.status = .forty
+            }
+            currentPlayer.status = .advantage
+        case .advantage:
+            currentPlayer.status = .game
+        case .game:
             return
         }
-        nextPlayer = playerOne
     }
     
-    func updatePlayersScore(by playingOrder: PlayingOrder) {
-        let currentPlayer = playingOrder == .first ? playerOne : playerTwo
-        
-        let otherPlayer = playingOrder == .first ? playerTwo : playerOne
-        
-        switch currentPlayer.status {
-            
-            case .love:
-                currentPlayer.status = .fifteen
-            case .fifteen:
-                currentPlayer.status = .thirty
-                if otherPlayer.status == .love {
-                    winner = currentPlayer
-                    return
-                }
-            case .thirty:
-                if otherPlayer.status == .forty {
-                    currentPlayer.status = .deuce
-                    otherPlayer.status = .deuce
-                } else if (otherPlayer.status == .love || otherPlayer.status == .fifteen) {
-                    currentPlayer.status = .forty
-                    winner = playerOne
-                    return
-                } else {
-                    currentPlayer.status = .forty
-                }
-            case .forty:
-                if (otherPlayer.status != .thirty) {
-                    winner = currentPlayer
-                    return
-                }
-            case .deuce:
-                if otherPlayer.status == .advantage {
-                    otherPlayer.status = .deuce
-                } else {
-                    currentPlayer.status = .advantage
-                }
-            case .advantage:
-                winner = currentPlayer
-                return
+    func currentPlayerScores() {
+        updateCurrentPlayerStatus()
+                
+        if currentPlayerWon {
+            winner = currentPlayer
+            return
         }
+                            
         switchPlayers()
     }
     
-    func restart() {
-        playerOne = Player(name: "Player One", order: .first)
-        playerTwo = Player(name: "Player Two", order: .second)
-        winner = nil
-        nextPlayer = playerOne
+    func currentPlayerMisses() {
+        switchPlayers()
     }
     
+    private func switchPlayers() {
+        if currentPlayer === playerOne {
+            currentPlayer = playerTwo
+            return
+        }
+        currentPlayer = playerOne
+    }
+
+    func restart() {
+        playerOne = Player(name: "Player One")
+        playerTwo = Player(name: "Player Two")
+        winner = nil
+        currentPlayer = playerOne
+    }
     
 }

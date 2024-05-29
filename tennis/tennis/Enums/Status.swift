@@ -8,5 +8,5 @@
 import Foundation
 
 enum Status: String {
-    case love, fifteen, thirty, forty, deuce, advantage
+    case love, fifteen, thirty, forty, advantage, game
 }

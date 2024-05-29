@@ -9,11 +9,19 @@ import Foundation
 
 class Player {
     var status: Status = .love
-    var name: String
-    let order: PlayingOrder!
+    private(set) var points = 0
     
-    init(name: String, order: PlayingOrder) {
+    var hasMinimumPoints: Bool {
+        points >= 4
+    }
+    
+    let name: String
+    
+    init(name: String) {
         self.name = name
-        self.order = order
+    }
+    
+    func increasePoints() {
+        points += 1
     }
 }
