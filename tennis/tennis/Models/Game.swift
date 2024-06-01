@@ -70,6 +70,7 @@ class Game: ObservableObject {
     }
     
     func currentPlayerMisses() {
+        otherPlayer.increasePoints()
         switchPlayers()
     }
     
